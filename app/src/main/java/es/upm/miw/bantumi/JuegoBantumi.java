@@ -192,8 +192,11 @@ public class JuegoBantumi {
      * @return juego serializado
      */
     public String serializa() {
-        // @TODO
-        return null;
+        String cad = "";
+        for (int i=0;i<NUM_POSICIONES;i++){
+            cad += getSemillas(i) + "\n";
+        }
+        return cad;
     }
 
     /**

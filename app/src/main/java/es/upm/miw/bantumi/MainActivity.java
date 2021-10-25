@@ -1,6 +1,7 @@
 package es.upm.miw.bantumi;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.FileOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 import es.upm.miw.bantumi.model.BantumiViewModel;
@@ -139,6 +142,15 @@ public class MainActivity extends AppCompatActivity {
                 resetAlertDialog.show(getSupportFragmentManager(),"ALERT_DIALOG");
                 return true;
 
+            case R.id.opcGuardarPartida:
+                save();
+                showSnack(getString(R.string.txtSave));
+                return true;
+
+            case R.id.opcRecuperarPartida:
+
+                return true;
+
             default:
                 Snackbar.make(
                         findViewById(android.R.id.content),
@@ -147,6 +159,29 @@ public class MainActivity extends AppCompatActivity {
                 ).show();
         }
         return true;
+    }
+
+    private void save(){
+        try {
+            FileOutputStream fos = openFileOutput(getFileName(), Context.MODE_APPEND);
+            String date = this.juegoBantumi.serializa();
+            fos.write(date.getBytes());
+            fos.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private String getFileName() {
+        return getResources().getString(R.string.default_FileName);
+    }
+
+    private void showSnack(String txt){
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                txt,
+                Snackbar.LENGTH_LONG
+        ).show();
     }
 
     /**
