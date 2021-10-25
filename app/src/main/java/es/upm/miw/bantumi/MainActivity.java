@@ -1,11 +1,13 @@
 package es.upm.miw.bantumi;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     JuegoBantumi juegoBantumi;
     BantumiViewModel bantumiVM;
     int numInicialSemillas;
+    private Button btReset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,15 @@ public class MainActivity extends AppCompatActivity {
         numInicialSemillas = getResources().getInteger(R.integer.intNumInicialSemillas);
         bantumiVM = new ViewModelProvider(this).get(BantumiViewModel.class);
         juegoBantumi = new JuegoBantumi(bantumiVM, JuegoBantumi.Turno.turnoJ1, numInicialSemillas);
+        btReset = findViewById(R.id.button);
         crearObservadores();
+        btReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ReserAlertDialog resetAlertDialog = new ReserAlertDialog();
+                resetAlertDialog.show(getSupportFragmentManager(),"ALERT_DIALOG");
+            }
+        });
     }
 
     /**
@@ -123,7 +134,10 @@ public class MainActivity extends AppCompatActivity {
                         .show();
                 return true;
 
-            // @TODO!!! resto opciones
+            case R.id.opcReiniciarPartida:
+                ReserAlertDialog resetAlertDialog = new ReserAlertDialog();
+                resetAlertDialog.show(getSupportFragmentManager(),"ALERT_DIALOG");
+                return true;
 
             default:
                 Snackbar.make(

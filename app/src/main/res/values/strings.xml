@@ -49,4 +49,9 @@
     <string name="txtDialogoFinalAfirmativo">Sí</string>
     <string name="txtDialogoFinalNegativo">No</string>
 
+    <string name="txtResetTitle">Reiniciar</string>
+    <string name="txtResetQuestion">¿Deseas reiniciar la partida?</string>
+    <string name="txtResetTrue">Si</string>
+    <string name="txtResetFalse">No</string>
+
 </resources>
