@@ -18,9 +18,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.BufferedReader;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import es.upm.miw.bantumi.model.BantumiViewModel;
 
@@ -148,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.opcRecuperarPartida:
-
+                recover();
                 return true;
 
             default:
@@ -182,6 +185,30 @@ public class MainActivity extends AppCompatActivity {
                 txt,
                 Snackbar.LENGTH_LONG
         ).show();
+    }
+
+    private void recover(){
+        boolean isContent = false;
+        try{
+            String game = "";
+            BufferedReader fin = new BufferedReader(
+                    new InputStreamReader(openFileInput(getFileName())));
+            String linea = fin.readLine();
+            while (linea != null) {
+                isContent = true;
+                game += linea;
+                linea = fin.readLine();
+            }
+            this.juegoBantumi.deserializa(game);
+            fin.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if(!isContent){
+            showSnack(getString(R.string.txtRecoverNull));
+        }else{
+            showSnack(getString(R.string.txtRecover));
+        }
     }
 
     /**
