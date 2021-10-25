@@ -54,4 +54,7 @@
     <string name="txtResetTrue">Si</string>
     <string name="txtResetFalse">No</string>
 
+    <string name="default_FileName">file.txt</string>
+    <string name="txtSave">Archivo guardado correctamente</string>
+
 </resources>
