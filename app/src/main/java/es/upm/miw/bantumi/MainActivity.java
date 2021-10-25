@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.opcGuardarPartida:
-                save();
+                saveFile();
                 showSnack(getString(R.string.txtSave));
                 return true;
 
@@ -164,6 +164,23 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void saveFile(){
+        boolean isContent = isContent();
+        if(isContent){
+            deleteFile();
+        }
+        save();
+    }
+
+    private void deleteFile() {
+        try {
+            FileOutputStream fos = openFileOutput(getFileName(), Context.MODE_PRIVATE);
+            fos.close();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private void save(){
         try {
             FileOutputStream fos = openFileOutput(getFileName(), Context.MODE_APPEND);
@@ -173,6 +190,20 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private boolean isContent(){
+        boolean isContent = false;
+        try {
+            BufferedReader fin = new BufferedReader(
+                    new InputStreamReader(openFileInput(getFileName())));
+            if(!fin.readLine().isEmpty()){
+                isContent = true;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return isContent;
     }
 
     private String getFileName() {
