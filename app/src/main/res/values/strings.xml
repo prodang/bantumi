@@ -56,7 +56,12 @@
 
     <string name="default_FileName">file.txt</string>
     <string name="txtSave">Partida guardada correctamente</string>
+
     <string name="txtRecover">Partida recuperada correctamente</string>
     <string name="txtRecoverNull">No hay una partida anteriormente</string>
+    <string name="txtRecoverTitle">Partida actual</string>
+    <string name="txtRecoverQuestion">La partida actual se borrará</string>
+    <string name="txtRecoverTrue">Si</string>
+    <string name="txtRecoverFalse">No</string>
 
 </resources>

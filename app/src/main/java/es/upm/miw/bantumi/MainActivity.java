@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.opcRecuperarPartida:
-                recover();
+                recoverFile();
                 return true;
 
             default:
@@ -165,8 +165,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void saveFile(){
-        boolean isContent = isContent();
-        if(isContent){
+        if(isContent()){
             deleteFile();
         }
         save();
@@ -216,6 +215,21 @@ public class MainActivity extends AppCompatActivity {
                 txt,
                 Snackbar.LENGTH_LONG
         ).show();
+    }
+
+    private void recoverFile(){
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.txtRecoverTitle)
+                .setMessage(R.string.txtRecoverQuestion)
+                .setPositiveButton(R.string.txtRecoverTrue,
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                recover();
+                            }
+                        })
+                .setNegativeButton(R.string.txtRecoverFalse, null)
+                .show();
     }
 
     private void recover(){
