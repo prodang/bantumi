@@ -3,6 +3,8 @@ package es.upm.miw.bantumi;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,16 +17,21 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.PreferenceManager;
+import androidx.room.Room;
 
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
+import es.upm.miw.bantumi.database.AppDatabase;
+import es.upm.miw.bantumi.database.User;
+import es.upm.miw.bantumi.database.UserDao;
 import es.upm.miw.bantumi.model.BantumiViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     BantumiViewModel bantumiVM;
     int numInicialSemillas;
     private Button btReset;
+    private AppDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
                 resetAlertDialog.show(getSupportFragmentManager(),"ALERT_DIALOG");
             }
         });
+        this.db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class,
+                "users-db")
+                .allowMainThreadQueries().build();
     }
 
     /**
@@ -129,9 +141,9 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.opcAjustes: // @todo Preferencias
-//                startActivity(new Intent(this, BantumiPrefs.class));
-//                return true;
+            case R.id.opcAjustes:
+                startActivity(new Intent(this, BantumiPrefs.class));
+                return true;
             case R.id.opcAcercaDe:
                 new AlertDialog.Builder(this)
                         .setTitle(R.string.aboutTitle)
@@ -241,7 +253,7 @@ public class MainActivity extends AppCompatActivity {
             String linea = fin.readLine();
             while (linea != null) {
                 isContent = true;
-                game += linea;
+                game += linea+";";
                 linea = fin.readLine();
             }
             this.juegoBantumi.deserializa(game);
@@ -310,7 +322,19 @@ public class MainActivity extends AppCompatActivity {
         )
         .show();
 
-        // @TODO guardar puntuación
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String namePlayer = sharedPref.getString(
+                "name",
+                getString(R.string.name_title)
+        );
+        User user = new User();
+        user.setFirstName(namePlayer);
+        user.setResult(this.juegoBantumi.getResults());
+        String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
+        user.setTime(timeStamp);
+        UserDao userDao = this.db.userDao();
+        userDao.insertAll(user);
+
         new FinalAlertDialog().show(getSupportFragmentManager(), "ALERT_DIALOG");
     }
 }
