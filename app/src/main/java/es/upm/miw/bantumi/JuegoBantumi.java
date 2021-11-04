@@ -12,6 +12,9 @@ public class JuegoBantumi {
     // Posiciones 7-12: campo jugador 2
     // Posición 13: depósito jugador 2
 
+    public static final String PLAYER_ONE = "PLAYER_ONE";
+    public static final String PLAYER_TWO = "PLAYER_TWO";
+
     private final BantumiViewModel bantumiVM;
 
     // Turno juego
@@ -211,7 +214,13 @@ public class JuegoBantumi {
         }
     }
 
-    public String getResults(){
-        return getSemillas(6)+";"+getSemillas(13);
+    public int getScore(String option){
+        int semillas = 0;
+        if(option.equals(PLAYER_ONE)){
+            semillas = getSemillas(6);
+        }else if(option.equals(PLAYER_TWO)){
+            semillas = getSemillas(13);
+        }
+        return semillas;
     }
 }

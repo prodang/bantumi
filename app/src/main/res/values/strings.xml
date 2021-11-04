@@ -67,4 +67,10 @@
     <string name="messages_header">Messages</string>
     <string name="name_title">Your name</string>
 
+    <string name="txtDelete">Borrar</string>
+    <string name="txtDeleteTitle">Eliminar resultados</string>
+    <string name="txtDeleteQuestion">¿Deseas eliminar todoss los resultados?</string>
+    <string name="txtDeleteTrue">Si</string>
+    <string name="txtDeleteFalse">No</string>
+
 </resources>
