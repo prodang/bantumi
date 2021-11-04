@@ -13,6 +13,9 @@ public interface UserDao {
     @Query("SELECT * FROM users")
     List<User> getAll();
 
+    @Query("SELECT * FROM users ORDER BY score_one DESC, score_two DESC LIMIT 10")
+    List<User> getBestScores();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insertAll(User... users);
 

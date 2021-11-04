@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import java.time.LocalDateTime;
 
 @Entity(tableName = "users")
 public class User {
@@ -15,7 +14,10 @@ public class User {
     protected String firstName;
     @ColumnInfo(name = "date_time")
     protected String dateTime;
-    protected String result;
+    @ColumnInfo(name = "score_one")
+    protected Integer scoreOne;
+    @ColumnInfo(name = "score_two")
+    protected Integer scoreTwo;
 
     public Integer getId() {
         return id;
@@ -41,11 +43,27 @@ public class User {
         this.dateTime = time;
     }
 
-    public String getResult() {
-        return result;
+    public Integer getScoreOne() {
+        return scoreOne;
     }
 
-    public void setResult(String result) {
-        this.result = result;
+    public void setScoreOne(Integer scoreOne) {
+        this.scoreOne = scoreOne;
+    }
+
+    public Integer getScoreTwo() {
+        return scoreTwo;
+    }
+
+    public void setScoreTwo(Integer scoreTwo) {
+        this.scoreTwo = scoreTwo;
+    }
+
+    @Override
+    public String toString() {
+        return firstName + ". "+
+                dateTime  + ". "+
+                "Player 1: "+scoreOne + ". "+
+                "Player 2: "+scoreTwo+ ".";
     }
 }

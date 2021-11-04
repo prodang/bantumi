@@ -166,6 +166,10 @@ public class MainActivity extends AppCompatActivity {
                 recoverFile();
                 return true;
 
+            case R.id.opcMejoresResultados:
+                startActivity(new Intent(this,BestResult.class));
+                return true;
+
             default:
                 Snackbar.make(
                         findViewById(android.R.id.content),
@@ -322,19 +326,24 @@ public class MainActivity extends AppCompatActivity {
         )
         .show();
 
+        saveDB();
+
+        new FinalAlertDialog().show(getSupportFragmentManager(), "ALERT_DIALOG");
+    }
+
+    private void saveDB(){
+        User user = new User();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         String namePlayer = sharedPref.getString(
                 "name",
                 getString(R.string.name_title)
         );
-        User user = new User();
         user.setFirstName(namePlayer);
-        user.setResult(this.juegoBantumi.getResults());
         String timeStamp = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(Calendar.getInstance().getTime());
         user.setTime(timeStamp);
+        user.setScoreOne(this.juegoBantumi.getScore(JuegoBantumi.PLAYER_ONE));
+        user.setScoreTwo(this.juegoBantumi.getScore(JuegoBantumi.PLAYER_TWO));
         UserDao userDao = this.db.userDao();
         userDao.insertAll(user);
-
-        new FinalAlertDialog().show(getSupportFragmentManager(), "ALERT_DIALOG");
     }
 }
